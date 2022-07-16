@@ -8,9 +8,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework import viewsets
 from .serializers import ProductoSerializer
+from .carro import Carro
 
 # Create your views here.[]
-
 class ProductoViewset(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
@@ -24,7 +24,6 @@ class ProductoViewset(viewsets.ModelViewSet):
             productos = productos.filter(nombre=nombre)
 
         return productos
-
 
 def index(request):
     return render (request, 'index.html')
@@ -121,3 +120,34 @@ def registro(request):
         data["form"] = formulario
     
     return render(request, 'registration/registro.html', data)
+
+
+def agregar_carro(request, producto_id):
+    carro= Carro(request)
+    producto = Producto.objects.get(codigo=producto_id)
+    carro.agregar(producto)
+    return redirect("productos")
+
+
+def elimar_carro(request, producto_id):
+    carro= Carro(request)
+    producto = Producto.objects.get(codigo=producto_id)
+    carro.eliminar(producto)
+    return redirect("productos")
+
+
+def restar_carro(request, producto_id):
+    carro= Carro(request)
+    producto = Producto.objects.get(codigo=producto_id)
+    carro.restar_producto(producto)
+    return redirect("productos")
+
+
+def limpiar_carro(request):
+    carro= Carro(request)
+    carro.limpiar()
+    return redirect("productos")
+
+def carro(request):
+    return render (request, 'carro.html')
+    

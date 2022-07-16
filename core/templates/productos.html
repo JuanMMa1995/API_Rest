@@ -16,6 +16,9 @@
         {% if perms.core.view_producto %}
         <a href="{% url 'listar_productos' %}" class="btn btn-primary">Listado de productos</a>&nbsp;&nbsp;
         {% endif  %}
+        <div>
+          {% include "carro.html" %}
+        </div>
       </div>
       <div class="container-fluid">
         {% csrf_token %}
@@ -38,9 +41,9 @@
                 {% if perms.core.change_producto %}
                 <a href="{% url 'modificar_productos' p.codigo %}" class="btn btn-success btn-sm">Modificar</a>
                 {% endif %}
-                {% if perms.core.view_producto %}
-                <a href="#" class="btn btn-success btn-sm" >Comprar</a>
-                {% endif %}
+                {% for producto in productos %}
+                <a href="{% url 'Add' producto.id %}" class="btn btn-success btn-sm" >Agregar al Carro</a>
+                {% endfor %}
               </div>
             <hr>
           </div>
